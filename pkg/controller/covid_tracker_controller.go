@@ -72,7 +72,8 @@ func (c *Controller) HandleWhatsAppQuery(message string) string {
 		}
 
 		return "Code provided by you is wrong! Correct formats are \n 1. CASES TOTAL \n 2. DEATHS TOTAL \n " +
-			"3. CASES NEW \n 4. DEATHS NEW \n 5. CASES <CODE IN CAPS> \n 6. DEATHS <CODE IN CAPS>"
+			"3. CASES NEW \n 4. DEATHS NEW \n 5. CASES <COUNTRY CODE IN CAPS> \n 6. DEATHS <COUNTRY CODE IN CAPS> \n" +
+			"7. NEWS GLOBAL \n 8. NEWS <COUNTRY CODE IN CAPS>"
 	}
 }
 
