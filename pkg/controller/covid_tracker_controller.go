@@ -78,10 +78,10 @@ func (c *Controller) HandleWhatsAppQuery(message string) string {
 
 func getResponseMessage(allNews *model.NewsTrack) string {
 	message := ""
-	count := 0
+	count := 1
 	for _, news := range allNews.News {
-		if count == 10 { break }
-		message = message + news.Title + "\n"
+		if count > 10 { break }
+		message = message + strconv.Itoa(count) + ". " + news.Title + "\n"
 		count = count + 1
 	}
 	return message
