@@ -1,8 +1,8 @@
 package model
 
 type GlobalCovidInformation struct {
-	Global GlobalSummary `json:"Global"`
-	Countries []CountrySummary `json:"Countries"`
+	Global *GlobalSummary `json:"Global"`
+	Countries []*CountrySummary `json:"Countries"`
 }
 
 //{
