@@ -22,7 +22,7 @@ func (c *CovidTrackerUseCase) ListCovidDeathsInfo(countryCode string) string {
 	case "NEW":
 		return fmt.Sprintf(constant.DEATHS_NEW_MESSAGE, "world", c.covidRepository.GetGlobalSummary().NewDeaths)
 	case "TOTAL":
-		return fmt.Sprintf(constant.DEATHS_TOTAL_MESSAGE, "world", c.covidRepository.GetGlobalSummary().NewDeaths)
+		return fmt.Sprintf(constant.DEATHS_TOTAL_MESSAGE, "world", c.covidRepository.GetGlobalSummary().TotalDeaths)
 	default:
 		summary, err := c.covidRepository.GetSummaryByCountryCode(countryCode)
 		if err != nil {
