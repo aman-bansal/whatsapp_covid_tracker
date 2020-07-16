@@ -43,7 +43,7 @@ func (c *Controller) HandleWhatsAppQuery(message string) string {
 				return "Hi there! Country code provided by you is invalid. Please check again"
 			}
 
-			return "Hi there! Number of Deaths Reported in " + summary.Country + " Stands at " + strconv.Itoa(summary.TotalConfirmed)
+			return "Hi there! Number of Deaths Reported in " + summary.Country + " Stands at " + strconv.Itoa(summary.TotalDeaths)
 		}
 
 		return "Code provided by you is wrong! Correct formats are \n 1. CASES TOTAL \n 2. DEATHS TOTAL \n " +
