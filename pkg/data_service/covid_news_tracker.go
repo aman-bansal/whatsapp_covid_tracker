@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -30,7 +31,7 @@ func (c CovidNewsTrackerDataService) GetLatestNews(countryCode string) (*model.N
 		return nil, err
 	}
 
-	request.Header.Set("Subscription-Key", "c9035cf04d44494b91fb6202504c0077")
+	request.Header.Set("Subscription-Key", os.Getenv("SMARTABLE_AI_SUBS_KEY"))
 	response, err := c.client.Do(request)
 	if err != nil {
 		log.Print("ERROR: not able to pull the data", err)
