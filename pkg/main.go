@@ -7,6 +7,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
 	log.Println(r.Form)
 	fmt.Fprintf(w, "Hi there, I love %s %s!", r.URL.Path[1:])
 }
