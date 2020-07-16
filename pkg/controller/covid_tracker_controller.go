@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/data_service"
+	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/model"
 	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/repository"
 	"log"
 	"strconv"
@@ -9,10 +11,14 @@ import (
 
 type Controller struct {
 	covidRepository *repository.CovidInfoRepository
+	covidNewsTrackerDataService data_service.CovidNewsTracker
 }
 
-func NewController(infoRepository *repository.CovidInfoRepository) Controller {
-	return Controller{covidRepository: infoRepository}
+func NewController(infoRepository *repository.CovidInfoRepository, tracker data_service.CovidNewsTracker) Controller {
+	return Controller{
+		covidRepository:             infoRepository,
+		covidNewsTrackerDataService: tracker,
+	}
 }
 func (c *Controller) HandleWhatsAppQuery(message string) string {
 	switch message {
@@ -46,7 +52,37 @@ func (c *Controller) HandleWhatsAppQuery(message string) string {
 			return "Hi there! Number of Deaths Reported in " + summary.Country + " Stands at " + strconv.Itoa(summary.TotalDeaths)
 		}
 
+		if params[0] == "NEWS" {
+			if params[1] == "GLOBAL" {
+				news, err := c.covidNewsTrackerDataService.GetLatestNews("global")
+				if err != nil {
+					log.Print("ERROR: getting latest news about covid. Please check your country code.", err)
+					return "Hi there! We are facing Issues while getting latest news. We will be up soon. In the meantime do check your country code if its valid."
+				}
+
+				return getResponseMessage(news)
+			}
+			news, err := c.covidNewsTrackerDataService.GetLatestNews(params[1])
+			if err != nil {
+				log.Print("ERROR: getting latest news about covid. Please check your country code.", err)
+				return "Hi there! We are facing Issues while getting latest news. We will be up soon. In the meantime do check your country code if its valid."
+			}
+
+			return getResponseMessage(news)
+		}
+
 		return "Code provided by you is wrong! Correct formats are \n 1. CASES TOTAL \n 2. DEATHS TOTAL \n " +
 			"3. CASES NEW \n 4. DEATHS NEW \n 5. CASES <CODE IN CAPS> \n 6. DEATHS <CODE IN CAPS>"
 	}
+}
+
+func getResponseMessage(allNews *model.NewsTrack) string {
+	message := ""
+	count := 0
+	for _, news := range allNews.News {
+		if count == 10 { break }
+		message = message + news.Title + "\n"
+		count = count + 1
+	}
+	return message
 }

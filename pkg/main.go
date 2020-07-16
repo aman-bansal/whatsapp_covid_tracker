@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/controller"
+	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/data_service"
 	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/job"
 	"github.com/aman-bansal/whatsapp_covid_tracker/pkg/repository"
 	"log"
@@ -12,11 +13,17 @@ import (
 func main() {
 	covidRepo, err := repository.NewCovidDataTrackerRepository()
 	if err != nil {
-		panic("Error initializing covid repository")
+		panic("ERROR: initializing covid repository")
 	}
 
 	job.InitCovidDataSyncJob(covidRepo)
-	covidHandler := controller.NewController(covidRepo)
+	tracker, err := data_service.NewCovidNewsTrackerDataService()
+	if err != nil {
+		log.Print("ERROR: while getting covid news tracker data service")
+		panic("ERROR: while getting covid news tracker data service")
+	}
+
+	covidHandler := controller.NewController(covidRepo, tracker)
 	http.HandleFunc("/message", func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 		if err != nil {
