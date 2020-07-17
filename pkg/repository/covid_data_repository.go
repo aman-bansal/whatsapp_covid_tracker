@@ -67,4 +67,6 @@ func (c *CovidInfoRepository) UpdateSummary(information *model.GlobalCovidInform
 		c.codeVsSummary[info.CountryCode] = info
 		c.countryNameVsSummary[info.Country] = info
 	}
+
+	c.globalSummary = information.Global
 }
