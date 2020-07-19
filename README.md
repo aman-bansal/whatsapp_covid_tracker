@@ -50,3 +50,9 @@ Enable free api subscription and subscription as env variable with key as ```SMA
 `pkg/repository` basic in memory based repository to handle temporary data storage.
 
 `pkg/use_case` handles all the valid use cases the product has.
+
+
+#### Sample Curl for Webhook URL
+
+```curl --location --request POST 'http://3.16.165.157:8080/message?Body=CASES%20TOTAL' \
+--data-raw ''```
